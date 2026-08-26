@@ -1,0 +1,57 @@
+## Build generated
+build
+DerivedData
+.derivedData
+
+## Various settings
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+
+# reporting
+ObjectiveC.gcda
+ObjectiveC.gcno
+.DS_Store
+tools
+
+## Other
+*.env
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+*.xcworkspacedata
+
+## Obj-C/Swift specific
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+#
+# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
+# Packages/
+# Package.pins
+# Package.resolved
+.build
+Pods
+Cembra.xcworkspace/xcshareddata/swiftpm/
+
+# Fastlane
+/fastlane/test_output
+/fastlane/test_output/*
+/fastlane/report.xml
+.scannerwork/
+reports
+
+#npm
+node_modules/
+
+#scripts
+/scripts/unused-localizations/*.txt
