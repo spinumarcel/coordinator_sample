@@ -98,13 +98,13 @@ extension NavigationCoordinator {
     
     /// Present a route as a sheet using a child coordinator of the same type.
     func presentSheet(route: Route) {
-        let child = SheetCoordinator(root: route, parent: self)
+        let child = PresentedCoordinator(root: route, parent: self)
         addChild(coordinator: child)
         sheet = child
     }
     
     func presentFullScreen(route: Route) {
-        let child = SheetCoordinator(root: route, parent: self)
+        let child = PresentedCoordinator(root: route, parent: self)
         addChild(coordinator: child)
         fullScreenSheet = child
     }
@@ -148,12 +148,12 @@ extension NavigationCoordinator {
     }
 }
 
-// MARK: - SheetCoordinator
+// MARK: - PresentedCoordinator
 
 /// Used  when presenting a route as a sheet or full-screen cover that still
 /// belongs to the same flow
 @MainActor
-private final class SheetCoordinator<Parent: NavigationCoordinator>: NavigationCoordinator {
+final class PresentedCoordinator<Parent: NavigationCoordinator>: NavigationCoordinator {
     typealias Route = Parent.Route
     typealias Action = Parent.Action
     

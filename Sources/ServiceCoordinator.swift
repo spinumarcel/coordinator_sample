@@ -28,6 +28,7 @@ enum ServiceBookingAction: Sendable {
 }
 
 enum BookingConfirmationAction: Sendable {
+    case goToServiceBenefits
     case done
     case dismiss
 }
@@ -38,6 +39,7 @@ enum ServicesRoute: NavigationRoute {
     case serviceDetail(id: String, acting: SubjectActing<ServiceDetailAction>)
     case serviceBooking(serviceId: String, acting: SubjectActing<ServiceBookingAction>)
     case bookingConfirmation(serviceId: String, acting: SubjectActing<BookingConfirmationAction>)
+    case serviceBenefits
     
     func build(navigationActing: SubjectActing<ServicesAction>) -> some View {
         switch self {
@@ -51,6 +53,8 @@ enum ServicesRoute: NavigationRoute {
             ServiceBookingScreen(serviceId: serviceId, acting: acting)
         case .bookingConfirmation(let serviceId, let acting):
             BookingConfirmationScreen(serviceId: serviceId, acting: acting)
+        case .serviceBenefits:
+            ServiceBenefitsScreen()
         }
     }
 }
@@ -59,7 +63,7 @@ extension ServicesRoute: Equatable {
     
     var id: String {
         switch self {
-        case .services, .serviceList:
+        case .services, .serviceList, .serviceBenefits:
             return "\(self)"
         case .serviceDetail(let id, _), .serviceBooking(let id, _), .bookingConfirmation(let id, _):
             return "\(caseName)-\(id)"
@@ -72,11 +76,11 @@ extension ServicesRoute: Equatable {
     
     static func == (lhs: ServicesRoute, rhs: ServicesRoute) -> Bool {
         switch (lhs, rhs) {
-        case (.services, .services), (.serviceList, .serviceList):
+        case (.services, .services), (.serviceList, .serviceList), (.serviceBenefits, .serviceBenefits):
             return true
         case (.serviceDetail(let lhsId, _), .serviceDetail(let rhsId, _)), (.serviceBooking(let lhsId, _), .serviceBooking(let rhsId, _)), (.bookingConfirmation(let lhsId, _), .bookingConfirmation(let rhsId, _)):
             return lhsId == rhsId
-        case (.services, _), (.serviceList, _), (.serviceDetail, _), (.serviceBooking, _), (.bookingConfirmation, _):
+        case (.services, _), (.serviceList, _), (.serviceDetail, _), (.serviceBooking, _), (.bookingConfirmation, _), (.serviceBenefits, _):
             return false
         }
     }
@@ -146,6 +150,9 @@ final class ServicesCoordinator: NavigationCoordinator {
     private func showBookingConfirmation(serviceId: String) {
         let acting = SubjectActing<BookingConfirmationAction> { [weak self] action in
             switch action {
+            case .goToServiceBenefits:
+                let sheetCoordinator = self?.sheet as? PresentedCoordinator<ServicesCoordinator>
+                sheetCoordinator?.push(.serviceBenefits)
             case .done:
                 self?.dismissPresented()
                 self?.popToRoot()
@@ -320,6 +327,9 @@ struct BookingConfirmationScreen: View {
             Text("Your booking for \(serviceId) has been confirmed.")
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
+            ActionButton("Benefits") {
+                acting.send(.goToServiceBenefits)
+            }
             ActionButton("✓ Done") {
                 acting.send(.done)
             }
@@ -329,5 +339,39 @@ struct BookingConfirmationScreen: View {
         }
         .padding()
         .navigationTitle("Confirmation")
+    }
+}
+
+struct ServiceBenefitsScreen: View {
+    
+    private let benefits = [
+        "Priority booking",
+        "Free cancellation",
+        "Exclusive member discounts",
+        "24/7 customer support"
+    ]
+
+    var body: some View {
+        VStack(spacing: 16) {
+            label("Service Benefits")
+            Divider()
+            benefitsList
+        }
+        .padding()
+        .navigationTitle("Benefits")
+    }
+    
+    private var benefitsList: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            ForEach(benefits, id: \.self) { benefit in
+                HStack(spacing: 12) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(.green)
+                    
+                    Text(benefit)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
