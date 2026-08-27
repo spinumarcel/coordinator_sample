@@ -38,7 +38,7 @@ extension Coordinator {
         fullScreenSheet = coordinator
     }
     
-    // Dismiss the sheet/full-screen presentation owned by this coordinator
+    // Dismisses the sheet or full screen cover currently presented by this coordinator
     func dismissPresented() {
         if let child = fullScreenSheet {
             removeChild(coordinator: child)
@@ -49,23 +49,12 @@ extension Coordinator {
         }
     }
     
-    // Dismiss this coordinator from its parent, or its own presentation first
-    func dismiss() {
-        if sheet != nil || fullScreenSheet != nil {
-            dismissPresented()
-        } else {
-            parent?.dismiss()
-        }
+    // Removes this coordinator from its parent
+    func dismissSelf() {
+        parent?.dismissPresented()
     }
     
-    // Recursively remove the entire child/presentation hierarchy
-    func dismissAll() {
-        childs.forEach { $0.dismissAll() }
-        childs.removeAll()
-        sheet = nil
-        fullScreenSheet = nil
-    }
-    
+    // Walks up to the root coordinator and dismisses its presentation
     func dismissRootPresentation() {
         var current: (any Coordinator) = self
         
@@ -132,20 +121,25 @@ extension NavigationCoordinator {
         path.removeLast(path.count - index - 1)
     }
     
-    func popTo(_ element: Route) {
-        popTo(where: {
-            $0 == element
-        })
+    func popTo(_ route: Route) {
+        popTo {
+            $0 == route
+        }
     }
     
     func popToRoot() {
         path.removeAll()
     }
     
-    // Dismiss the current presentation and navigate back to the specified route
-    func dismissAndPopTo(route: Route) {
+    func dismissAndPopTo(where condition: (Route) -> Bool) {
         dismissPresented()
-        popTo(route)
+        popTo(where: condition)
+    }
+    
+    func dismissAndPopTo(route: Route) {
+        dismissAndPopTo {
+            $0 == route
+        }
     }
     
     func eraseToAnyView() -> AnyView {

@@ -64,6 +64,7 @@ final class HomeCoordinator: NavigationCoordinator {
 enum AuthAction: Sendable {
     case goToRegister
     case showInfo
+    case dismiss
     case dismissPresented
     case dismissToRoot
     case pop
@@ -98,7 +99,9 @@ final class AuthCoordinator: NavigationCoordinator {
         case .showInfo:
             presentSheet(route: .info)
         case .dismissPresented:
-            dismiss()
+            dismissPresented()
+        case .dismiss:
+            dismissSelf()
         case .dismissToRoot:
             dismissRootPresentation()
         case .pop:
@@ -146,7 +149,7 @@ final class OrderCoordinator: NavigationCoordinator {
             parent?.dismissPresented()
             (parent as? any NavigationCoordinator)?.popToRoot()
         case .dismiss:
-            dismiss()
+            dismissSelf()
         }
     }
 }
@@ -258,7 +261,7 @@ struct LoginScreen: View {
                 acting.send(.goToRegister)
             }
             ActionButton("Dismiss sheet") {
-                acting.send(.dismissPresented)
+                acting.send(.dismiss)
             }
         }
         .padding()

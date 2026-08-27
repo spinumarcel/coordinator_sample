@@ -30,6 +30,7 @@ enum ServiceBookingAction: Sendable {
 
 enum BookingConfirmationAction: Sendable {
     case goToServiceBenefits
+    case popToList
     case done
     case dismiss
 }
@@ -156,6 +157,13 @@ final class ServicesCoordinator: NavigationCoordinator {
             case .goToServiceBenefits:
                 let sheetCoordinator = self?.sheet as? PresentedCoordinator<ServicesCoordinator>
                 sheetCoordinator?.push(.serviceBenefits)
+            case .popToList:
+                self?.dismissAndPopTo {
+                    if case .serviceList = $0 {
+                        return true
+                    }
+                    return false
+                }
             case .done:
                 self?.dismissPresented()
                 self?.popToRoot()
@@ -196,7 +204,7 @@ final class ServiceInfoCoordinator: NavigationCoordinator {
     func handle(_ action: ServiceInfoAction) {
         switch action {
         case .dismiss:
-            dismiss()
+            dismissSelf()
         }
     }
 }
@@ -346,11 +354,14 @@ struct BookingConfirmationScreen: View {
             ActionButton("Benefits") {
                 acting.send(.goToServiceBenefits)
             }
-            ActionButton("✓ Done") {
-                acting.send(.done)
+            ActionButton("←← Back to List") {
+                acting.send(.popToList)
             }
             ActionButton("Close") {
                 acting.send(.dismiss)
+            }
+            ActionButton("✓ Done") {
+                acting.send(.done)
             }
         }
         .padding()
