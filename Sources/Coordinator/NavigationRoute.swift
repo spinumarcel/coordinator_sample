@@ -5,6 +5,7 @@ protocol NavigationRoute: Hashable {
     associatedtype Destination: View
     associatedtype Action: Sendable
     
+    @MainActor
     @ViewBuilder
     func build(navigationActing: SubjectActing<Action>) -> Destination
 }

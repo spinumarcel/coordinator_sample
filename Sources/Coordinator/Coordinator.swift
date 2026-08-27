@@ -120,11 +120,17 @@ extension NavigationCoordinator {
         path.removeLast()
     }
     
-    func popTo(_ route: Route) {
-        guard let index = path.firstIndex(of: route) else {
+    func popTo(where condition: (Route) -> Bool) {
+        guard let index = path.firstIndex(where: condition) else {
             return
         }
-        path = Array(path.prefix(through: index))
+        path.removeLast(path.count - index - 1)
+    }
+    
+    func popTo(_ element: Route) {
+        popTo(where: {
+            $0 == element
+        })
     }
     
     func popToRoot() {

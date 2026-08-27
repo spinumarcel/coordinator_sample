@@ -14,14 +14,12 @@ enum HomeAction: Sendable {
     case showOrderConfirmation(orderId: String)
 }
 
-nonisolated
 enum HomeRoute: NavigationRoute {
     case home
     case catalog
     case productDetail(id: String)
     case cart
 
-    @ViewBuilder
     func build(navigationActing: SubjectActing<HomeAction>) -> some View {
         switch self {
         case .home:
@@ -71,13 +69,11 @@ enum AuthAction: Sendable {
     case pop
 }
 
-nonisolated
 enum AuthRoute: NavigationRoute {
     case login
     case register
     case info
 
-    @ViewBuilder
     func build(navigationActing: SubjectActing<AuthAction>) -> some View {
         switch self {
         case .login:
@@ -119,12 +115,10 @@ enum OrderAction: Sendable {
     case dismiss
 }
 
-nonisolated
 enum OrderRoute: NavigationRoute {
     case confirmation(orderId: String)
     case success
 
-    @ViewBuilder
     func build(navigationActing: SubjectActing<OrderAction>) -> some View {
         switch self {
         case .confirmation(let id):

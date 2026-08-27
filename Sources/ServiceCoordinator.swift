@@ -24,6 +24,7 @@ enum ServiceBookingAction: Sendable {
     case confirm
     case popBack
     case popToRoot
+    case popToList
 }
 
 enum BookingConfirmationAction: Sendable {
@@ -38,7 +39,6 @@ enum ServicesRoute: NavigationRoute {
     case serviceBooking(serviceId: String, acting: SubjectActing<ServiceBookingAction>)
     case bookingConfirmation(serviceId: String, acting: SubjectActing<BookingConfirmationAction>)
     
-    @ViewBuilder
     func build(navigationActing: SubjectActing<ServicesAction>) -> some View {
         switch self {
         case .services:
@@ -131,6 +131,13 @@ final class ServicesCoordinator: NavigationCoordinator {
                 self?.pop()
             case .popToRoot:
                 self?.popToRoot()
+            case .popToList:
+                self?.popTo {
+                    if case .serviceList = $0 {
+                        return true
+                    }
+                    return false
+                }
             }
         }
         push(.serviceBooking(serviceId: serviceId, acting: acting))
@@ -160,11 +167,9 @@ enum ServiceInfoAction: Sendable {
     case dismiss
 }
 
-nonisolated
 enum ServiceInfoRoute: NavigationRoute {
     case info
     
-    @ViewBuilder
     func build(navigationActing: SubjectActing<ServiceInfoAction>) -> some View {
         switch self {
         case .info:
@@ -270,6 +275,9 @@ struct ServiceBookingScreen: View {
             }
             ActionButton("← Back") {
                 acting.send(.popBack)
+            }
+            ActionButton("←← Back to List") {
+                acting.send(.popToList)
             }
             ActionButton("←← Back to Services") {
                 acting.send(.popToRoot)
