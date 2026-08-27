@@ -19,6 +19,19 @@ struct CoordinatorView<T: NavigationCoordinator>: View {
         .fullScreenCover(item: fullScreenItem) { item in
             item.view
         }
+        .alert(
+            coordinator.alert?.title ?? "",
+            isPresented: isAlertPresented,
+            presenting: coordinator.alert,
+            actions: {
+                alertAction(content: $0)
+            },
+            message: {
+                if let message = $0.message {
+                    Text(message)
+                }
+            }
+        )
     }
     
     private var sheetItem: Binding<IdentifiableCoordinator?> {
@@ -51,6 +64,30 @@ struct CoordinatorView<T: NavigationCoordinator>: View {
                 }
             }
         )
+    }
+    
+    private var isAlertPresented: Binding<Bool> {
+        Binding(
+            get: { [coordinator] in
+                coordinator.alert != nil
+            },
+            set: { [coordinator] in
+                if $0 == false {
+                    coordinator.alert = nil
+                }
+            }
+        )
+    }
+    
+    @ViewBuilder
+    private func alertAction(content: AlertContent) -> some View {
+        ForEach(content.actions.indices, id: \.self) { index in
+            let action = content.actions[index]
+            Button(action.title, role: action.role) {
+                action.handler?()
+                coordinator.alert = nil
+            }
+        }
     }
 }
 

@@ -4,6 +4,7 @@
     named(path),
     named(sheet),
     named(fullScreenSheet),
+    named(alert),
     named(parent),
     named(childs),
     named(navigationActing),

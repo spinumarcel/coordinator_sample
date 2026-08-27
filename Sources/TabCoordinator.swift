@@ -18,6 +18,7 @@ final class TabBarCoordinator: Coordinator {
     
     @Published var sheet: (any Coordinator)?
     @Published var fullScreenSheet: (any Coordinator)?
+    @Published var alert: AlertContent?
     @Published private(set) var currentTab: TabRoute = .home
     
     var parent: (any Coordinator)?

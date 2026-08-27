@@ -8,6 +8,7 @@ protocol Coordinator: ObservableObject {
     
     var sheet: (any Coordinator)? { get set }
     var fullScreenSheet: (any Coordinator)? { get set }
+    var alert: AlertContent? { get set }
     
     var parent: (any Coordinator)? { get set }
     var childs: [any Coordinator] { get set }
@@ -19,6 +20,10 @@ protocol Coordinator: ObservableObject {
 }
 
 extension Coordinator {
+    
+    func presentAlert(_ content: AlertContent) {
+        alert = content
+    }
     
     /// Present an external coordinator as a sheet.
     func presentSheet<T: Coordinator>(_ coordinator: T) {
@@ -162,6 +167,7 @@ final class PresentedCoordinator<Parent: NavigationCoordinator>: NavigationCoord
     @Published var path: [Route] = []
     @Published var sheet: (any Coordinator)?
     @Published var fullScreenSheet: (any Coordinator)?
+    @Published var alert: AlertContent?
     
     let root: Route
     

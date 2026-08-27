@@ -21,6 +21,7 @@ enum ServiceDetailAction: Sendable {
 }
 
 enum ServiceBookingAction: Sendable {
+    case confirmAlert(AlertContent)
     case confirm
     case popBack
     case popToRoot
@@ -129,6 +130,8 @@ final class ServicesCoordinator: NavigationCoordinator {
     private func goToBooking(serviceId: String) {
         let acting = SubjectActing<ServiceBookingAction> { [weak self] action in
             switch action {
+            case .confirmAlert(let content):
+                self?.presentAlert(content)
             case .confirm:
                 self?.showBookingConfirmation(serviceId: serviceId)
             case .popBack:
@@ -278,7 +281,7 @@ struct ServiceBookingScreen: View {
             label("Book \(serviceId)")
             Divider()
             ActionButton("✓ Confirm Booking") {
-                acting.send(.confirm)
+                acting.send(.confirmAlert(alertContent))
             }
             ActionButton("← Back") {
                 acting.send(.popBack)
@@ -292,6 +295,19 @@ struct ServiceBookingScreen: View {
         }
         .padding()
         .navigationTitle("Booking")
+    }
+    
+    private var alertContent: AlertContent {
+        .init(
+            title: "Confirm Booking",
+            message: "Do you want to confirm this booking?",
+            actions: [
+                .cancel(title: "Cancel"),
+                .standard(title: "Confirm") {
+                    acting.send(.confirm)
+                }
+            ]
+        )
     }
 }
 
@@ -350,7 +366,7 @@ struct ServiceBenefitsScreen: View {
         "Exclusive member discounts",
         "24/7 customer support"
     ]
-
+    
     var body: some View {
         VStack(spacing: 16) {
             label("Service Benefits")

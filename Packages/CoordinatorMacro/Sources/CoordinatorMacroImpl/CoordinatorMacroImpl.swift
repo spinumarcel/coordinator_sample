@@ -32,6 +32,7 @@ public struct CoordinatorMacro: MemberMacro, ExtensionMacro {
             "@Published var path: [\(raw: routeType)] = []",
             "@Published var sheet: (any Coordinator)?",
             "@Published var fullScreenSheet: (any Coordinator)?",
+            "@Published var alert: AlertContent?",
             "weak var parent: (any Coordinator)?",
             "var childs: [any Coordinator] = []",
             "private(set) lazy var navigationActing: SubjectActing<\(raw: routeType).Action> = makeNavigationActing()",

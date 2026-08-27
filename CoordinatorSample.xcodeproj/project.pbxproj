@@ -17,6 +17,7 @@
 		1AB3A892303F11E200361ED2 /* CoordinatorMacro in Frameworks */ = {isa = PBXBuildFile; productRef = 1AB3A891303F11E200361ED2 /* CoordinatorMacro */; };
 		1AB3A8D8303FA03000361ED2 /* ServiceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB3A8D7303FA03000361ED2 /* ServiceCoordinator.swift */; };
 		1AB3A8DA303FA0D400361ED2 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB3A8D9303FA0D400361ED2 /* HomeCoordinator.swift */; };
+		1AB3A920304059AB00361ED2 /* AlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB3A91F304059AB00361ED2 /* AlertContent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		1AB3A88F303F11D000361ED2 /* CoordinatorMacro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CoordinatorMacro; path = Packages/CoordinatorMacro; sourceTree = "<group>"; };
 		1AB3A8D7303FA03000361ED2 /* ServiceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceCoordinator.swift; sourceTree = "<group>"; };
 		1AB3A8D9303FA0D400361ED2 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
+		1AB3A91F304059AB00361ED2 /* AlertContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertContent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				1AB3A871303F105B00361ED2 /* Coordinator.swift */,
 				1AB3A872303F105B00361ED2 /* CoordinatorView.swift */,
 				1AB3A873303F105B00361ED2 /* NavigationRoute.swift */,
+				1AB3A91F304059AB00361ED2 /* AlertContent.swift */,
 				1AB3A874303F105B00361ED2 /* SubjectActing.swift */,
 			);
 			path = Coordinator;
@@ -159,6 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AB3A920304059AB00361ED2 /* AlertContent.swift in Sources */,
 				1AB3A882303F105B00361ED2 /* Coordinator.swift in Sources */,
 				1AB3A883303F105B00361ED2 /* CoordinatorView.swift in Sources */,
 				1AB3A884303F105B00361ED2 /* NavigationRoute.swift in Sources */,
